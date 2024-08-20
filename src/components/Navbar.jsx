@@ -31,6 +31,7 @@ const Navbar = () => {
           width={100}
           src="https://logos-world.net/wp-content/uploads/2020/04/HM-Logo-1999-present.jpg"
           alt="logo"
+          onClick={() => nav("/")}
         />
       </div>
       <div className="search-section">
@@ -42,7 +43,9 @@ const Navbar = () => {
       <div className="menu-area">
         <ul className="menu-list">
           {menuList.map((menu, index) => (
-            <li key={index}>{menu}</li>
+            <li key={index} onClick={() => console.log(menu)}>
+              {menu}
+            </li>
           ))}
         </ul>
       </div>
