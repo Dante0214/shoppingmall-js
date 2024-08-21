@@ -42,17 +42,21 @@ const ItemDetail = () => {
   return (
     <Container>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6} className="product-detail-img">
-          <img src={item.img} alt={item.title} style={{ width: "100%" }} />
+        <Grid item xs={12} md={6}>
+          <img
+            src={item.img}
+            alt={item.title}
+            style={{ width: "100%", height: "80%" }}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="h5" className="product-info">
+          <Typography variant="h5" gutterBottom>
             {item.title}
           </Typography>
-          <Typography variant="h6" className="product-info">
+          <Typography variant="h6" gutterBottom>
             ₩ {item.price}
           </Typography>
-          <Typography variant="body2" className="choice">
+          <Typography variant="body2" gutterBottom>
             {item.choice ? "Conscious choice" : ""}
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -71,7 +75,12 @@ const ItemDetail = () => {
                     </MenuItem>
                   ))}
               </Select>
-              <Button variant="contained" color="primary" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ mt: 2 }}
+              >
                 담기
               </Button>
             </FormControl>

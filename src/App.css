@@ -9,6 +9,9 @@
   display: flex;
   justify-content: center;
 }
+.nav-section img {
+  cursor: pointer;
+}
 .menu-list {
   display: flex;
   list-style-type: none;
@@ -48,4 +51,7 @@
 }
 .card img {
   width: 100%;
+}
+.price-section {
+  margin: 100px;
 }

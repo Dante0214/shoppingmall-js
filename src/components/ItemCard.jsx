@@ -9,6 +9,7 @@ const ItemCard = ({ item }) => {
   return (
     <div className="card" onClick={showDetail}>
       <img src={item.img} alt={item.id} />
+
       <div>{item?.choice ? "Conscious choice" : ""}</div>
       <div>{item?.title}</div>
       <div>₩{item?.price}</div>

@@ -22,7 +22,7 @@ function App() {
   const [login, setLogin] = useState(false);
   return (
     <div>
-      <Navbar />
+      <Navbar login={login} setLogin={setLogin} />
       <Routes>
         <Route path="/" element={<ItemAll />}></Route>
         <Route path="/login" element={<Login setLogin={setLogin} />}></Route>
