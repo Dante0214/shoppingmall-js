@@ -86,6 +86,7 @@ const Navbar = ({ login, setLogin }) => {
           color="inherit"
           aria-label="menu"
           onClick={toggleDrawer(true)}
+          sx={{ mx: 1 }}
         >
           <MenuIcon />
         </IconButton>
