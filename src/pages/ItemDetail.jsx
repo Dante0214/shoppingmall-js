@@ -25,7 +25,7 @@ const ItemDetail = () => {
     setSelectedSize("");
   };
   const getItem = async () => {
-    const url = `http://localhost:5000/products/${id}`;
+    const url = `https://my-json-server.typicode.com/Dante0214/shoppingmall-js/products/${id}`;
     const res = await fetch(url);
     const data = await res.json();
     setItem(data);

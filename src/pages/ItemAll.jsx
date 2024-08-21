@@ -8,7 +8,7 @@ const ItemAll = () => {
   const [query, setQuery] = useSearchParams();
   const getItems = async () => {
     const searchQuery = query.get("q") || "";
-    const url = `http://localhost:5000/products?q=${searchQuery}`;
+    const url = `https://my-json-server.typicode.com/Dante0214/shoppingmall-js/products?q=${searchQuery}`;
     const res = await fetch(url);
     const data = await res.json();
     setItemList(data);
