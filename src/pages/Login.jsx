@@ -15,6 +15,7 @@ const Login = ({ setLogin }) => {
   const [signUp, setSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayname, setDisplayname] = useState("");
   const [error, setError] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -25,9 +26,9 @@ const Login = ({ setLogin }) => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: {
-          redirectTo: "https://shoppingmall-js.vercel.app/",
-        },
+        // options: {
+        //   redirectTo: "http://localhost:5173/",
+        // },
       });
       if (error) throw error;
       setLogin(true);
@@ -41,7 +42,7 @@ const Login = ({ setLogin }) => {
     setError("");
     try {
       if (signUp) {
-        await signUpWithEmail(email, password);
+        await signUpWithEmail(email, password, displayname);
       } else {
         await signInWithEmail(email, password);
       }
@@ -76,6 +77,19 @@ const Login = ({ setLogin }) => {
             alignItems: "center",
           }}
         >
+          {signUp && (
+            <TextField
+              margin="normal"
+              required
+              id="nickname"
+              label="Nickname"
+              name="nickname"
+              autoComplete="nickname"
+              autoFocus
+              fullWidth
+              onChange={(e) => setDisplayname(e.target.value)}
+            />
+          )}
           <TextField
             margin="normal"
             required

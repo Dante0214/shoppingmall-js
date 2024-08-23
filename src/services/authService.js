@@ -16,10 +16,15 @@ export async function signInWithEmail(email, password) {
 
 //회원가입
 
-export async function signUpWithEmail(email, password) {
+export async function signUpWithEmail(email, password, displayname) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        user_name: displayname,
+      },
+    },
   });
 
   if (error) {

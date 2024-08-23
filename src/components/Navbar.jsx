@@ -14,7 +14,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { signOut } from "../services/authService";
 
-const Navbar = ({ login, setLogin }) => {
+const Navbar = ({ login, setLogin, displayName }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -29,9 +29,7 @@ const Navbar = ({ login, setLogin }) => {
     "지속가능성",
   ];
   const nav = useNavigate();
-  const goToLogin = () => {
-    nav("/login");
-  };
+
   const search = (e) => {
     if (e.key === "Enter") {
       const keyword = e.target.value;
@@ -56,16 +54,24 @@ const Navbar = ({ login, setLogin }) => {
 
   return (
     <div>
-      <div>
-        <div className="login-button" onClick={goToLogin}>
-          <FontAwesomeIcon icon={faUser} />
-          {login ? (
-            <div onClick={handleLogout}>로그아웃</div>
-          ) : (
-            <div onClick={() => nav("/login")}>로그인</div>
-          )}
+      <div className="login-container">
+        <div className="login-box">
+          {displayName && <div>{`Welcome, ${displayName}!`}</div>}
+          <div className="icon-and-buttons">
+            <FontAwesomeIcon icon={faUser} className="user-icon" />
+            {login ? (
+              <div className="logout-btn" onClick={handleLogout}>
+                로그아웃
+              </div>
+            ) : (
+              <div className="login-btn" onClick={() => nav("/login")}>
+                로그인
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
       <div className="nav-section">
         <img
           width={100}

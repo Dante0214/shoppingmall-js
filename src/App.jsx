@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import ItemAll from "./pages/ItemAll";
 import Login from "./pages/Login";
-import ItemDetail from "./pages/ItemDetail";
 import Navbar from "./components/Navbar";
 import { useEffect, useState } from "react";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -23,18 +22,49 @@ import { supabase } from "./services/supabaseClient";
 function App() {
   const [login, setLogin] = useState(false);
   const [session, setSession] = useState(null);
+  const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const fetchSessionAndUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setSession(session);
       setLogin(!!session);
-    });
+
+      if (session) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          const displayname = user.user_metadata?.user_name || "";
+          setDisplayName(displayname);
+        }
+      }
+    };
+
+    fetchSessionAndUser();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setLogin(!!session);
+      if (session) {
+        const fetchUser = async () => {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+          if (user) {
+            const displayname = user.user_metadata?.user_name || "";
+            setDisplayName(displayname);
+          }
+        };
+        fetchUser();
+        console.log(session);
+      } else {
+        setDisplayName("");
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -42,7 +72,7 @@ function App() {
 
   return (
     <div>
-      <Navbar login={login} setLogin={setLogin} />
+      <Navbar displayName={displayName} login={login} setLogin={setLogin} />
       <Routes>
         <Route path="/" element={<ItemAll />}></Route>
         <Route path="/login" element={<Login setLogin={setLogin} />}></Route>

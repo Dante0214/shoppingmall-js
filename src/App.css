@@ -1,9 +1,32 @@
-.login-button {
+.login-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin: 20px;
+}
+.login-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-and-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.logout-btn {
+  margin-left: 5px;
   cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.login-btn {
+  margin-left: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .nav-section {
   display: flex;
