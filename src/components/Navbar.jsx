@@ -12,6 +12,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { signOut } from "../services/authService";
 
 const Navbar = ({ login, setLogin }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -43,13 +44,23 @@ const Navbar = ({ login, setLogin }) => {
     setIsDrawerOpen(open);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setLogin(false);
+      nav("/");
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
+
   return (
     <div>
       <div>
         <div className="login-button" onClick={goToLogin}>
           <FontAwesomeIcon icon={faUser} />
           {login ? (
-            <div onClick={() => setLogin(false)}>로그아웃</div>
+            <div onClick={handleLogout}>로그아웃</div>
           ) : (
             <div onClick={() => nav("/login")}>로그인</div>
           )}

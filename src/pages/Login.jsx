@@ -1,12 +1,51 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmail, signUpWithEmail } from "../services/authService";
+import { supabase } from "../services/supabaseClient";
+
 const Login = ({ setLogin }) => {
+  const [signUp, setSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
+
   const nav = useNavigate();
-  const handleSubmit = (e) => {
+
+  const handleOAuthSignIn = async (provider) => {
+    setError(""); // 이전 오류 메시지를 초기화
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({ provider });
+      if (error) throw error; // 오류가 발생한 경우 처리
+      setLogin(true); // 로그인 성공 시 로그인 상태 업데이트
+      nav("/"); // 로그인 후 리디렉션
+    } catch (error) {
+      console.log(error);
+      setError(error.message); // 오류 메시지 설정
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLogin(true);
-    nav("/");
+    setError("");
+    try {
+      if (signUp) {
+        await signUpWithEmail(email, password);
+      } else {
+        await signInWithEmail(email, password);
+      }
+      setLogin(true);
+      nav("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
   return (
     <Container>
@@ -19,18 +58,30 @@ const Login = ({ setLogin }) => {
         }}
       >
         <Typography component="h1" variant="h5">
-          로그인
+          {signUp ? "회원가입" : "로그인"}
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{
+            mt: 1,
+            minWidth: isMobile ? "70vw" : "500px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <TextField
             margin="normal"
             required
-            fullWidth
             id="email"
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
+            fullWidth
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -40,14 +91,33 @@ const Login = ({ setLogin }) => {
             label="Password"
             type="password"
             id="password"
+            onChange={(e) => setPassword(e.target.value)}
           />
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            로그인
+            {signUp ? "회원가입" : "로그인"}
+          </Button>
+          <Button onClick={() => setSignUp(!signUp)} fullWidth variant="text">
+            {signUp
+              ? `이미 계정이 있습니까? 로그인`
+              : "계정이 없습니까? 회원가입"}
+          </Button>
+          <Button
+            onClick={() => handleOAuthSignIn("github")}
+            fullWidth
+            variant="text"
+            sx={{ mb: 2, textTransform: "none" }}
+          >
+            GitHub로 로그인
           </Button>
         </Box>
       </Box>
