@@ -21,15 +21,19 @@ const Login = ({ setLogin }) => {
   const nav = useNavigate();
 
   const handleOAuthSignIn = async (provider) => {
-    setError(""); // 이전 오류 메시지를 초기화
+    setError("");
     try {
-      const { error } = await supabase.auth.signInWithOAuth({ provider });
-      if (error) throw error; // 오류가 발생한 경우 처리
-      setLogin(true); // 로그인 성공 시 로그인 상태 업데이트
-      nav("/"); // 로그인 후 리디렉션
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: "https://shoppingmall-js.vercel.app/",
+        },
+      });
+      if (error) throw error;
+      setLogin(true);
     } catch (error) {
       console.log(error);
-      setError(error.message); // 오류 메시지 설정
+      setError(error.message);
     }
   };
   const handleSubmit = async (e) => {
