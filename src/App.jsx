@@ -61,7 +61,6 @@ function App() {
           }
         };
         fetchUser();
-        console.log(session);
       } else {
         setDisplayName("");
       }
